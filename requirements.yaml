@@ -1,0 +1,12 @@
+name: cse190
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - numpy
+  - matplotlib
+  - pandas
+  - pyyaml
+  - conda-forge::docker-py
+  # - conda-forge::locust
+  - conda-forge::kubernetes

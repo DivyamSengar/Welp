@@ -1,0 +1,61 @@
+##################################################################################################
+# Productpage services and deployment
+##################################################################################################
+
+# Defining a Kubernetes Service for the frontend application.
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend  # Name of the Service resource
+  labels:
+    app: frontend  # Label to identify the application
+    service: frontend
+spec:
+  clusterIP: 10.96.88.88  # Assign a fixed IP address to access the service within the cluster
+  ports:
+  - port: 8080  # Port number to expose the service
+    name: http   # Name for the port, commonly used as an identifier
+  selector:
+    app: frontend  # Selecting pods with this label to route traffic to
+
+---
+
+# Defining a ServiceAccount for the frontend application.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: restaurant-frontend  # Name of the ServiceAccount resource
+  labels:
+    account: frontend  # Label to identify the service account
+
+---
+
+# Defining a Kubernetes Deployment for the frontend application.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend  # Name of the Deployment resource
+  labels:
+    app: frontend  # Label to identify the application
+spec:
+  replicas: 1  # Number of desired pod replicas for this deployment
+  selector:
+    matchLabels:
+      app: frontend  # Selecting pods with this label to manage
+  template:
+    metadata:
+      labels:
+        app: frontend  # Labels applied to the pods created by this template
+    spec:
+      serviceAccountName: restaurant-frontend  # Using the specified ServiceAccount
+      imagePullSecrets:
+      - name: regcred  # Name of the secret used for pulling the Docker image
+      containers:
+      - name: frontend  # Name of the container
+        image: iaprelev190/restaurant_microservice:lab3
+        command: ["/app/restaurant-microservice"]  # Command to run within the container
+        args: ["frontend"]  # Arguments passed to the command line in main.go, used to specify server
+        imagePullPolicy: Always  # Policy for pulling the container image (Always in this case)
+        ports:
+        - containerPort: 8080  # Port exposed by the container
+---

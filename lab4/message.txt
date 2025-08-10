@@ -1,0 +1,298 @@
++ iterations=(10000 20000 40000 80000)
++ affinities=("same" "diff")
++ echo 'Starting benchmark runs with perf (including warm-up)...'
+Starting benchmark runs with perf (including warm-up)...
++ for iter in "${iterations[@]}"
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ echo 'Iteration Count: 10000'
+Iteration Count: 10000
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: same (Warm-up)'
+Running with affinity: same (Warm-up)
++ sh benchmark.sh --perf -i 10000 -a same
++ echo 'Running with affinity: same (Measurement)'
+Running with affinity: same (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 10000 -a same
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 1: Total time for 10000 iterations: 0.000305 seconds (avg: 0.000000 sec/iter)
+Thread 2: Total time for 10000 iterations: 0.000270 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 10000 -a same':
+
+        24,049,911      cpu_atom/cycles/u                                                     
+       252,045,742      cpu_core/cycles/u                                                       (84.03%)
+           133,770      cpu_atom/cache-references/u                                           
+         2,424,056      cpu_core/cache-references/u                                             (84.03%)
+            51,632      cpu_atom/cache-misses/u          #   38.60% of all cache refs         
+           412,577      cpu_core/cache-misses/u          #   17.02% of all cache refs           (84.03%)
+
+       0.088131692 seconds time elapsed
+
+       0.074726000 seconds user
+       0.012575000 seconds sys
+
+
++ echo ''
+
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: diff (Warm-up)'
+Running with affinity: diff (Warm-up)
++ sh benchmark.sh --perf -i 10000 -a diff
++ echo 'Running with affinity: diff (Measurement)'
+Running with affinity: diff (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 10000 -a diff
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 2: Total time for 10000 iterations: 0.001021 seconds (avg: 0.000000 sec/iter)
+Thread 1: Total time for 10000 iterations: 0.001232 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 10000 -a diff':
+
+        17,942,556      cpu_atom/cycles/u                                                       (93.62%)
+       250,571,762      cpu_core/cycles/u                                                       (87.28%)
+            81,850      cpu_atom/cache-references/u                                             (93.62%)
+         2,558,486      cpu_core/cache-references/u                                             (87.28%)
+            34,966      cpu_atom/cache-misses/u          #   42.72% of all cache refs           (93.62%)
+           357,162      cpu_core/cache-misses/u          #   13.96% of all cache refs           (87.28%)
+
+       0.093842725 seconds time elapsed
+
+       0.073319000 seconds user
+       0.020079000 seconds sys
+
+
++ echo ''
+
++ for iter in "${iterations[@]}"
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ echo 'Iteration Count: 20000'
+Iteration Count: 20000
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: same (Warm-up)'
+Running with affinity: same (Warm-up)
++ sh benchmark.sh --perf -i 20000 -a same
++ echo 'Running with affinity: same (Measurement)'
+Running with affinity: same (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 20000 -a same
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 1: Total time for 20000 iterations: 0.000666 seconds (avg: 0.000000 sec/iter)
+Thread 2: Total time for 20000 iterations: 0.000997 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 20000 -a same':
+
+        24,627,104      cpu_atom/cycles/u                                                       (91.08%)
+       266,250,668      cpu_core/cycles/u                                                       (80.99%)
+           167,414      cpu_atom/cache-references/u                                             (91.08%)
+         2,670,900      cpu_core/cache-references/u                                             (80.99%)
+            73,183      cpu_atom/cache-misses/u          #   43.71% of all cache refs           (91.08%)
+           314,397      cpu_core/cache-misses/u          #   11.77% of all cache refs           (80.99%)
+
+       0.091033790 seconds time elapsed
+
+       0.070143000 seconds user
+       0.019061000 seconds sys
+
+
++ echo ''
+
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: diff (Warm-up)'
+Running with affinity: diff (Warm-up)
++ sh benchmark.sh --perf -i 20000 -a diff
++ echo 'Running with affinity: diff (Measurement)'
+Running with affinity: diff (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 20000 -a diff
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 1: Total time for 20000 iterations: 0.003437 seconds (avg: 0.000000 sec/iter)
+Thread 2: Total time for 20000 iterations: 0.003490 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 20000 -a diff':
+
+        20,872,949      cpu_atom/cycles/u                                                     
+       256,598,034      cpu_core/cycles/u                                                       (87.06%)
+           118,270      cpu_atom/cache-references/u                                           
+         2,174,556      cpu_core/cache-references/u                                             (87.06%)
+            29,667      cpu_atom/cache-misses/u          #   25.08% of all cache refs         
+           292,633      cpu_core/cache-misses/u          #   13.46% of all cache refs           (87.06%)
+
+       0.089463634 seconds time elapsed
+
+       0.073729000 seconds user
+       0.017682000 seconds sys
+
+
++ echo ''
+
++ for iter in "${iterations[@]}"
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ echo 'Iteration Count: 40000'
+Iteration Count: 40000
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: same (Warm-up)'
+Running with affinity: same (Warm-up)
++ sh benchmark.sh --perf -i 40000 -a same
++ echo 'Running with affinity: same (Measurement)'
+Running with affinity: same (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 40000 -a same
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 2: Total time for 40000 iterations: 0.001863 seconds (avg: 0.000000 sec/iter)
+Thread 1: Total time for 40000 iterations: 0.002065 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 40000 -a same':
+
+        38,855,100      cpu_atom/cycles/u                                                     
+       217,311,701      cpu_core/cycles/u                                                       (92.97%)
+           217,387      cpu_atom/cache-references/u                                           
+         1,729,968      cpu_core/cache-references/u                                             (92.97%)
+            51,721      cpu_atom/cache-misses/u          #   23.79% of all cache refs         
+           274,712      cpu_core/cache-misses/u          #   15.88% of all cache refs           (92.97%)
+
+       0.086855978 seconds time elapsed
+
+       0.070948000 seconds user
+       0.014526000 seconds sys
+
+
++ echo ''
+
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: diff (Warm-up)'
+Running with affinity: diff (Warm-up)
++ sh benchmark.sh --perf -i 40000 -a diff
++ echo 'Running with affinity: diff (Measurement)'
+Running with affinity: diff (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 40000 -a diff
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 1: Total time for 40000 iterations: 0.006866 seconds (avg: 0.000000 sec/iter)
+Thread 2: Total time for 40000 iterations: 0.007076 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 40000 -a diff':
+
+         9,741,334      cpu_atom/cycles/u                                                       (88.45%)
+       258,841,360      cpu_core/cycles/u                                                       (93.03%)
+            86,119      cpu_atom/cache-references/u                                             (88.45%)
+         2,485,224      cpu_core/cache-references/u                                             (93.03%)
+            36,680      cpu_atom/cache-misses/u          #   42.59% of all cache refs           (88.45%)
+           269,521      cpu_core/cache-misses/u          #   10.84% of all cache refs           (93.03%)
+
+       0.092071631 seconds time elapsed
+
+       0.071455000 seconds user
+       0.025170000 seconds sys
+
+
++ echo ''
+
++ for iter in "${iterations[@]}"
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ echo 'Iteration Count: 80000'
+Iteration Count: 80000
++ echo ----------------------------------------------------------------------
+----------------------------------------------------------------------
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: same (Warm-up)'
+Running with affinity: same (Warm-up)
++ sh benchmark.sh --perf -i 80000 -a same
++ echo 'Running with affinity: same (Measurement)'
+Running with affinity: same (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 80000 -a same
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 2: Total time for 80000 iterations: 0.004653 seconds (avg: 0.000000 sec/iter)
+Thread 1: Total time for 80000 iterations: 0.005248 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 80000 -a same':
+
+        15,891,252      cpu_atom/cycles/u                                                     
+       257,826,034      cpu_core/cycles/u                                                       (89.11%)
+           110,443      cpu_atom/cache-references/u                                           
+         2,508,220      cpu_core/cache-references/u                                             (89.11%)
+            56,502      cpu_atom/cache-misses/u          #   51.16% of all cache refs         
+           280,354      cpu_core/cache-misses/u          #   11.18% of all cache refs           (89.11%)
+
+       0.085944208 seconds time elapsed
+
+       0.068799000 seconds user
+       0.015419000 seconds sys
+
+
++ echo ''
+
++ for affinity in "${affinities[@]}"
++ echo 'Running with affinity: diff (Warm-up)'
+Running with affinity: diff (Warm-up)
++ sh benchmark.sh --perf -i 80000 -a diff
++ echo 'Running with affinity: diff (Measurement)'
+Running with affinity: diff (Measurement)
++ perf stat -e cycles,cache-references,cache-misses sh benchmark.sh -i 80000 -a diff
+thread_mini.c: In function ‘do_business_logic’:
+thread_mini.c:22:16: warning: comparison between pointer and integer
+   22 |     if (buf[0] == NULL) {
+      |                ^~
+Thread 1: Total time for 80000 iterations: 0.016702 seconds (avg: 0.000000 sec/iter)
+Thread 2: Total time for 80000 iterations: 0.017164 seconds (avg: 0.000000 sec/iter)
+Shared memory contents after business logic:
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+
+ Performance counter stats for 'sh benchmark.sh -i 80000 -a diff':
+
+        13,957,842      cpu_atom/cycles/u                                                     
+       281,360,190      cpu_core/cycles/u                                                       (92.35%)
+           108,801      cpu_atom/cache-references/u                                           
+         2,267,604      cpu_core/cache-references/u                                             (92.35%)
+            45,642      cpu_atom/cache-misses/u          #   41.95% of all cache refs         
+           274,158      cpu_core/cache-misses/u          #   12.09% of all cache refs           (92.35%)
+
+       0.102688163 seconds time elapsed
+
+       0.085336000 seconds user
+       0.031315000 seconds sys
+
+
++ echo ''
+
++ echo 'Benchmark runs complete.'
+Benchmark runs complete.

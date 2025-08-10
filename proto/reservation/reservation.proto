@@ -1,0 +1,62 @@
+// Specifies the syntax version for this proto file.
+syntax = "proto3";
+
+// Sets the Go package for the generated code.
+option go_package = "./proto/reservation";
+
+// Define the package name for this proto file.
+package reservation;
+
+// ReservationService is a service that provides APIs for managing restaurant reservations.
+service ReservationService {
+    // MakeReservation is an RPC method for adding or updating restaurant reservations.
+    rpc MakeReservation(MakeReservationRequest) returns (MakeReservationResponse);
+    
+    // GetReservation is an RPC method for retrieving restaurant reservations.
+    rpc GetReservation(GetReservationRequest) returns (GetReservationResponse);
+
+    // MostPopular is an RPC method for retrieving most popular restaurants.
+    rpc MostPopular(MostPopularRequest) returns (MostPopularResponse);
+}
+
+// Date message to represent year, month, and day.
+message Date {
+    int32 year = 1;  
+    int32 month = 2; 
+    int32 day = 3;   
+}
+
+// MakeReservationRequest is the request message for making a reservation.
+message MakeReservationRequest {
+    string user_name = 1;        
+    string restaurant_name = 2;  
+    Date time = 3;               
+}
+
+// MakeReservationResponse is the response message for MakeReservation RPC method.
+message MakeReservationResponse {
+    bool status = 1; // Status of the reservation request (true if successful, false otherwise)
+}
+
+// GetReservationRequest is the request message for getting a user's reservation at a specific restaurant.
+message GetReservationRequest {
+    string user_name = 1; // Username of the person whose reservation is to be fetched
+    string restaurant_name = 2; // Restaurant to fetch the reservation for
+}
+
+// GetReservationResponse is the response message for GetReservation RPC method.
+message GetReservationResponse {
+    string user_name = 1;       // Username of the person whose reservations are fetched
+    string restaurant_name = 2; // Name of the restaurant where the reservation is made
+    Date time = 3;              // Time of the reservation
+}
+
+// MostPopularRequest is the request message for MostPopular RPC method.
+message MostPopularRequest {
+    int32 topK = 1;  // Number of top restaurants to return
+}
+
+// MostPopularResponse is the response message for MostPopular RPC.
+message MostPopularResponse {
+    repeated string topK_restaurants = 1; // List of the topK most popular restaurants
+}

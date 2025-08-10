@@ -1,0 +1,56 @@
+##################################################################################################
+# Sample service and deployment
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: <service-name>
+  labels:
+    app: <app-name>
+    service: <service-name>
+spec:
+  ports:
+  - port: <port-number>
+    name: grpc
+  selector:
+    app: <app-name>
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: <service-account-name>
+  labels:
+    account: <service-account-name>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <deployment-name>
+  labels:
+    app: <app-name>
+spec:
+  replicas: <replica-count>
+  selector:
+    matchLabels:
+      app: <app-name>
+  template:
+    metadata:
+      labels:
+        app: <app-name>
+    spec:
+      serviceAccountName: <service-account-name>
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: <container-name>
+        image: <user>/restaurant_microservice:<tag>
+        command: ["/app/restaurant-microservice"]
+        args: ["<cmd-line-arg-for-main.go>"]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: <container-port>
+        resources:
+          limits:
+            cpu: "1"
+          requests:
+            cpu: "1"

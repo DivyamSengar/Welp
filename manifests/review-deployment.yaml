@@ -1,0 +1,56 @@
+##################################################################################################
+# Sample service and deployment
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: review
+  labels:
+    app: review
+    service: review
+spec:
+  ports:
+  - port: 8082
+    name: grpc
+  selector:
+    app: review
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: restaurant-review
+  labels:
+    account: review
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review
+  labels:
+    app: review
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: review
+  template:
+    metadata:
+      labels:
+        app: review
+    spec:
+      serviceAccountName: restaurant-review
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: review
+        image: iaprelev190/restaurant_microservice:lab3
+        command: ["/app/restaurant-microservice"]
+        args: ["review"]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8082
+        resources:
+          limits:
+            cpu: "1"
+          requests:
+            cpu: "1"

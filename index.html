@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Webpage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        div {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Application Handlers</h1>
+    
+    <div>
+        <label for="restaurantName">Restaurant Name:</label>
+        <input type="text" id="restaurantName" placeholder="Enter restaurant name">
+    </div>
+    
+    <button id="getReviewBtn">Get Review</button>
+    
+    <script>
+        const baseURL = "http://10.96.88.88:8080";  // Replace with your server's IP and port
+
+        function sendRequest(url) {
+            fetch(baseURL + url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the response data as needed
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+        document.getElementById("getReviewBtn").addEventListener("click", () => {
+            const restaurantName = document.getElementById("restaurantName").value;
+            if (restaurantName.trim() !== "") {
+                sendRequest(`/get-review?restaurant=${encodeURIComponent(restaurantName)}`);
+            } else {
+                console.log("Please enter a valid restaurant name.");
+            }
+        });
+    </script>
+</body>
+</html>

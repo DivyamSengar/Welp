@@ -1,0 +1,41 @@
+syntax = "proto3";
+option go_package = "./proto/mycache";
+
+package mycache;
+
+message CacheItem {
+  string key = 1;
+  bytes value = 2;
+}
+
+// The cache service definition
+service CacheService {
+  rpc GetItem(GetItemRequest) returns (GetItemResponse) {}
+  rpc SetItem(SetItemRequest) returns (SetItemResponse) {}
+  rpc DeleteItem(DeleteItemRequest) returns (DeleteItemResponse) {}
+}
+
+message GetItemRequest {
+  string key = 1;
+}
+
+message GetItemResponse {
+  CacheItem item = 1;
+}
+
+message SetItemRequest {
+  // string key = 1;
+  CacheItem item = 1;
+}
+
+message SetItemResponse {
+  bool success = 1;
+}
+
+message DeleteItemRequest {
+  string key = 1;
+}
+
+message DeleteItemResponse {
+  bool success = 1;
+}

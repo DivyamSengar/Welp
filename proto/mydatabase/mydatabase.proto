@@ -1,0 +1,58 @@
+syntax = "proto3";
+option go_package = "./proto/mydatabase";
+
+package mydatabase;
+
+message DatabaseRecord {
+    string key = 1;
+    bytes value = 2;
+}
+
+service DatabaseService {
+  // Set a new record in the database
+  rpc SetRecord(SetRecordRequest) returns (SetRecordResponse);
+
+  // Get a record from the database
+  rpc GetRecord(GetRecordRequest) returns (GetRecordResponse);
+
+  // Delete a record from the database
+  rpc DeleteRecord(DeleteRecordRequest) returns (DeleteRecordResponse);
+}
+
+message SetRecordRequest {
+  // Fields for setting a new record
+  DatabaseRecord record = 1;
+  // ... add more fields as needed
+}
+
+message SetRecordResponse {
+  // Response message for setting a record
+  bool success = 1;
+  // string message = 2;
+  // ... add more fields as needed
+}
+
+message GetRecordRequest {
+  // Field for specifying the record to get
+  string key = 1;
+}
+
+message GetRecordResponse {
+  // Response message for getting a record
+  DatabaseRecord record = 1;
+  //   bool success = 2;
+  
+  // ... add more fields as needed
+}
+
+message DeleteRecordRequest {
+  // Field for specifying the record to delete
+  string key = 1;
+}
+
+message DeleteRecordResponse {
+  // Response message for deleting a record
+  bool success = 1;
+  // string message = 2;
+  // ... add more fields as needed
+}

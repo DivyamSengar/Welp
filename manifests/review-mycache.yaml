@@ -1,0 +1,48 @@
+##################################################################################################
+# review storage service and deployment
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: mycache-review
+  labels:
+    app: mycache-review
+    service: mycache-review
+spec:
+  ports:
+  - port: 11211
+    name: grpc
+  selector:
+    app: mycache-review
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mycache-review
+  labels:
+    app: mycache-review
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mycache-review
+  template:
+    metadata:
+      labels:
+        app: mycache-review
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: mycache-review
+        image: iaprelev190/restaurant_microservice:lab3
+        command: ["/app/restaurant-microservice"]
+        args: ["review", "cache"]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11211
+        resources:
+          limits:
+            cpu: 1000m # 1 (virtual if on VM) CPU
+          requests:
+            cpu: 100m # 100 (virtual) millicpus

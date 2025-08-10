@@ -1,0 +1,48 @@
+##################################################################################################
+# reservation storage service and deployment
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: mydatabase-reservation
+  labels:
+    app: mydatabase-reservation
+    service: mydatabase-reservation
+spec:
+  ports:
+  - port: 27017
+    name: grpc
+  selector:
+    app: mydatabase-reservation
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydatabase-reservation
+  labels:
+    app: mydatabase-reservation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mydatabase-reservation
+  template:
+    metadata:
+      labels:
+        app: mydatabase-reservation
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: mydatabase-reservation
+        image: iaprelev190/restaurant_microservice:lab3
+        command: ["/app/restaurant-microservice"]
+        args: ["reservation", "database"]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 27017
+        resources:
+          limits:
+            cpu: 1000m # 1 (virtual if on VM) CPU
+          requests:
+            cpu: 100m # 100 (virtual) millicpus

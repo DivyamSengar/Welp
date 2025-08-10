@@ -1,0 +1,56 @@
+##################################################################################################
+# Sample service and deployment
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: detail
+  labels:
+    app: detail
+    service: detail
+spec:
+  ports:
+  - port: 8081
+    name: grpc
+  selector:
+    app: detail
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: restaurant-detail
+  labels:
+    account: restaurant-detail
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: detail
+  labels:
+    app: detail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: detail
+  template:
+    metadata:
+      labels:
+        app: detail
+    spec:
+      serviceAccountName: restaurant-detail
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: detail
+        image: iaprelev190/restaurant_microservice:lab3
+        command: ["/app/restaurant-microservice"]
+        args: ["detail"]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+        resources:
+          limits:
+            cpu: "1"
+          requests:
+            cpu: "1"
